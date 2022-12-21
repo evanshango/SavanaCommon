@@ -1,0 +1,49 @@
+name: Release To NuGet
+on:
+  push:
+    branches:
+      - main
+env:
+  PROJECT_PATH: './Treasures.Common.csproj'
+  OUTPUT_DIR: ${{github.workspace}}/output
+  NUGET_URL: 'https://api.nuget.org/v3/index.json'
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Application Versioning
+        id: versioning
+        uses: TriPSs/conventional-changelog-action@v3.18.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          skip-version-file: 'true'
+          git-message: ${{ github.event.commits.message }}
+          git-user-name: ${{ github.event.head_commit.author.name }}
+          git-user-email: ${{ github.event.head_commit.author.email }}
+          create-summary: "true"
+          skip-commit: "true"
+
+      - name: Restore Packages
+        run: dotnet restore ${{env.PROJECT_PATH}}
+
+      - name: Build a Release
+        run: dotnet build ${{env.PROJECT_PATH}} --no-restore --configuration Release
+
+      - name: Create NuGet Package
+        run: dotnet pack ${{env.PROJECT_PATH}} --no-restore --no-build -c Release /p:PackageVersion=${{steps.versioning.outputs.version}} /p:PackageReleaseNotes="${{steps.versioning.outputs.clean_changelog}}" --output ${{env.OUTPUT_DIR}}
+        
+      - name: Release Latest Build
+        run: gh release create ${{ steps.versioning.outputs.tag }} -n "${{ steps.versioning.outputs.clean_changelog }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Nuget Package
+        run: dotnet nuget push ${{env.OUTPUT_DIR}}/*.nupkg -k ${{secrets.NUGET_KEY}} -s ${{env.NUGET_URL}} -n
