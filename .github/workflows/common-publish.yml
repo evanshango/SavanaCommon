@@ -38,7 +38,7 @@ jobs:
         run: dotnet build ${{env.PROJECT_PATH}} --no-restore --configuration Release
       
       - name: Show Versions
-        run: echo "${{ steps.versioning.outputs.version }} "${{ steps.versioning.outputs.steps.versioning.outputs.version }}"
+        run: echo "${{ steps.versioning.outputs.version }}" "${{ steps.versioning.outputs.steps.versioning.outputs.version }}"
 
       - name: Create NuGet Package
         run: dotnet pack ${{env.PROJECT_PATH}} --no-restore --no-build -c Release /p:PackageVersion=${{steps.versioning.outputs.version}} /p:PackageReleaseNotes="${{steps.versioning.outputs.steps.versioning.outputs.version}}" --output ${{env.OUTPUT_DIR}}
