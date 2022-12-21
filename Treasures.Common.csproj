@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>Treasures.Common</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/evanshango/savana-treasures.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/evanshango/savana-treasures.git</PackageProjectUrl>
+        <Description>
+            Library for common service functionalities such as generic repository, Swagger configuration and File
+            upload service to aws, digital ocean spaces or cloudinary
+        </Description>
+        <PackageTags>unitOfWork, generic repository, swagger config, file upload, savana</PackageTags>
+        <Product>Savana Treasures Common Package</Product>
+        <Authors>Evans Shango</Authors>
+        <Company>Savana Treasures</Company>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+</Project>
