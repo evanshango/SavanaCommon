@@ -36,9 +36,12 @@ jobs:
 
       - name: Build a Release
         run: dotnet build ${{env.PROJECT_PATH}} --no-restore --configuration Release
+      
+      - name: Show Versions
+        run: echo "${{ steps.versioning.outputs.version }} "${{ steps.versioning.outputs.steps.versioning.outputs.version }}"
 
       - name: Create NuGet Package
-        run: dotnet pack ${{env.PROJECT_PATH}} --no-restore --no-build -c Release /p:PackageVersion=${{steps.versioning.outputs.version}} /p:PackageReleaseNotes="${{steps.versioning.outputs.clean_changelog}}" --output ${{env.OUTPUT_DIR}}
+        run: dotnet pack ${{env.PROJECT_PATH}} --no-restore --no-build -c Release /p:PackageVersion=${{steps.versioning.outputs.version}} /p:PackageReleaseNotes="${{steps.versioning.outputs.steps.versioning.outputs.version}}" --output ${{env.OUTPUT_DIR}}
         
       - name: Release Latest Build
         run: gh release create ${{ steps.versioning.outputs.tag }} -n "${{ steps.versioning.outputs.clean_changelog }}"
