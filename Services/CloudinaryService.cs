@@ -12,17 +12,23 @@ public class CloudinaryService : ICloudinaryService {
         new Account(cloudName, apiKey, apiSecret)
     );
 
-    public async Task<ImageUploadResult?> UploadFile(IFormFile file, int? width, int? height) {
+    public async Task<ImageUploadResult?> UploadFile(
+        IFormFile file, string itemId, string? publicId, int? width, int? height
+    ) {
         if (file.Length <= 0) return null;
-        
+
         var extension = file.FileName.Split(".")[file.FileName.Split(".").Length - 1];
         var fileName = $"{DateTime.Now:yyyyMMddHHmmssffff}.{extension.ToLower()}";
-        
+
         await using var stream = file.OpenReadStream();
         var uploadParams = new ImageUploadParams {
             File = new FileDescription(fileName, stream),
-            Transformation = new Transformation().Width(width).Height(height).Crop("fill").Gravity("face")
+            Folder = itemId,
+            Transformation = new Transformation().Width(width).Height(height).Crop("fill").Gravity("face"),
         };
+
+        if (publicId != null) uploadParams.PublicId = publicId;
+
         return await _cloudinary.UploadAsync(uploadParams);
     }
 
