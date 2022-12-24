@@ -5,8 +5,8 @@ using Treasures.Common.Responses;
 namespace Treasures.Common.Extensions;
 
 public static class ErrorExtensions {
-    public static IServiceCollection AddErrorResponse<T>(this IServiceCollection services)
-        where T : ApiBehaviorOptions {
+    public static IServiceCollection AddErrorResponse<T>(
+        this IServiceCollection services) where T : ApiBehaviorOptions {
         services.Configure<T>(options => {
                 options.InvalidModelStateResponseFactory = actionCtx => {
                     var errors = actionCtx.ModelState
