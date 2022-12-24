@@ -12,9 +12,7 @@ public class CloudinaryService : ICloudinaryService {
         new Account(cloudName, apiKey, apiSecret)
     );
 
-    public async Task<ImageUploadResult?> UploadFile(
-        IFormFile file, string itemId, string? publicId, int? width, int? height
-    ) {
+    public async Task<ImageUploadResult?> UploadFile(IFormFile file, string itemId, int? width, int? height) {
         if (file.Length <= 0) return null;
 
         var extension = file.FileName.Split(".")[file.FileName.Split(".").Length - 1];
@@ -26,8 +24,6 @@ public class CloudinaryService : ICloudinaryService {
             Folder = itemId,
             Transformation = new Transformation().Width(width).Height(height).Crop("fill").Gravity("face"),
         };
-
-        if (publicId != null) uploadParams.PublicId = publicId;
 
         return await _cloudinary.UploadAsync(uploadParams);
     }
