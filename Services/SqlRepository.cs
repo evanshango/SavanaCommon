@@ -17,9 +17,13 @@ public class SqlRepository<T> : ISqlRepository<T> where T : class {
     /// <param name="spec"></param>
     /// <param name="count"></param>
     /// <returns><list type="T"></list></returns>
-    public async Task<IReadOnlyList<T>> GetRandomAsync(ISpecification<T> spec, int count) =>
-        await ApplySpecification(spec).OrderBy(_ => Guid.NewGuid()).AsNoTracking().Take(count)
-            .ToListAsync().ConfigureAwait(false);
+    public async Task<IReadOnlyList<T>> GetRandomAsync(ISpecification<T> spec, int count){
+        return await ApplySpecification(spec)
+            .OrderBy(_ => new Random().Next())
+            .AsNoTracking().Take(count)
+            .ToListAsync()
+            .ConfigureAwait(false);
+    }
 
     /// <summary>
     /// Find By Id (string)
