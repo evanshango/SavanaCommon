@@ -17,9 +17,8 @@ public class SqlRepository<T> : ISqlRepository<T> where T : class {
     /// <param name="spec"></param>
     /// <param name="count"></param>
     /// <returns><list type="T"></list></returns>
-    public async Task<IReadOnlyList<T>> GetRandomAsync(ISpecification<T> spec, int count) {
-        return await ApplySpecification(spec).AsEnumerable().OrderBy(_ => new Random().Next())
-            .Take(count).AsQueryable().AsNoTracking().ToListAsync();
+    public IReadOnlyList<T> GetRandomAsync(ISpecification<T> spec, int count) {
+        return ApplySpecification(spec).AsEnumerable().OrderBy(_ => Guid.NewGuid()).Take(count).ToList();
     }
 
     /// <summary>
