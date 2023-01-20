@@ -10,6 +10,8 @@ public class SqlRepository<T> : ISqlRepository<T> where T : class {
     public SqlRepository(DbContext context) => _context = context;
 
     public async Task<IReadOnlyList<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
+    
+    public async Task<IReadOnlyList<T>> GetAllAsync(ISpecification<T> sp) => await ApplySpecification(sp).ToListAsync();
 
     /// <summary>
     /// Returns random items based on the count and specification given
@@ -51,7 +53,7 @@ public class SqlRepository<T> : ISqlRepository<T> where T : class {
     }
 
     public T DeleteAsync(T entity) => _context.Set<T>().Remove(entity).Entity;
-    
+
     private IQueryable<T> ApplySpecification(ISpecification<T> spec) => SpecificationEvaluator<T>.GetQuery(
         _context.Set<T>().AsQueryable(), spec
     );
