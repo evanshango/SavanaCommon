@@ -1,7 +1,7 @@
 namespace Treasures.Common.Helpers; 
 
 public class Pagination {
-    private const int MaxPageSize = 36;
+    private const int MaxPageSize = 100;
     public int Page { get; set; } = 1;
     private int _pageSize = 20;
 
