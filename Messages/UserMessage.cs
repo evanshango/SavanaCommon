@@ -6,6 +6,6 @@ public class UserMessage {
     public string? Email { get; set; }
     public string? PhoneNo { get; set; }
     public string? UpdatedBy { get; set; }
-    public string? Active { get; set; }
+    public bool? Active { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }
