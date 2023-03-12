@@ -1,6 +1,8 @@
 namespace Treasures.Common.Events;
 
-public record UserEvent(string UserId, string Json, string EventType);
+public record UserProductEvent(string UserId, string Json, string EventType);
+
+public record UserOrderEvent(string UserId, string Json, string EventType);
 
 public record ProductEvent(string ProductId, string Json, string EventType);
 
