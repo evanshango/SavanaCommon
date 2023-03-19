@@ -14,7 +14,7 @@ public class CloudinaryService : ICloudinaryService {
 
     public async Task<ImageUploadResult?> UploadFile(IFormFile file, string itemId, int? width, int? height) {
         if (file.Length <= 0) return null;
-        
+
         var fileName = $"{DateTime.Now:yyyyMMddHHmmssffff}.png";
 
         await using var stream = file.OpenReadStream();
@@ -24,7 +24,6 @@ public class CloudinaryService : ICloudinaryService {
             Transformation = new Transformation().Effect("background_removal")
                 .Width(width).Height(height).Crop("fill").Gravity("face")
         };
-
         return await _cloudinary.UploadAsync(uploadParams);
     }
 
