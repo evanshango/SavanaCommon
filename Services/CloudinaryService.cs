@@ -15,14 +15,14 @@ public class CloudinaryService : ICloudinaryService {
     public async Task<ImageUploadResult?> UploadFile(IFormFile file, string itemId, int? width, int? height) {
         if (file.Length <= 0) return null;
 
-        var fileName = $"{DateTime.Now:yyyyMMddHHmmssffff}.png";
-
+        var fileName = Guid.NewGuid().ToString("N")[..10].ToLower();
         await using var stream = file.OpenReadStream();
         var uploadParams = new ImageUploadParams {
+            PublicId = fileName,
             File = new FileDescription(fileName, stream),
             Folder = itemId,
-            Transformation = new Transformation().Effect("background_removal")
-                .Width(width).Height(height).Crop("fill").Gravity("face")
+            Format = "png",
+            Transformation = new Transformation().Width(width).Height(height).Crop("fill").Gravity("face")
         };
         return await _cloudinary.UploadAsync(uploadParams);
     }
